@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:panel header="Alunos Cadastrados" rendered="#{alunoBean.aluno eq null}">
+		<p:commandButton value="Novo Aluno" icon="novo-icon" action="#{alunoBean.novoAluno}" update="aluno_form"/>
+		<br /><br />
+		
+		<p:dataTable value="#{alunoBean.alunos}" var="aluno"
+			paginator="true" rows="15" rowsPerPageTemplate="5, 10, 15" style="width:1200px;">
+
+		<p:column headerText="Foto" style="width:70px;">
+			<p:graphicImage value="#{alunoBean.imagemAluno}" 
+			width="60" height="60" cache="false">
+				<f:param name="id_aluno" value="#{aluno.id}" />
+			</p:graphicImage>
+		</p:column>
+
+		<p:column headerText="Nome" style="width:300px;">
+			<h:outputText id= "foto" value="#{aluno.nome}" />
+			<p:tooltip id="toolTipFoto" for="foto" rendered="#{aluno.foto != null}">
+				<p:graphicImage value="#{alunoBean.imagemAluno}" 
+					width="180" height="180" cache="false">
+				<f:param name="id_aluno" value="#{aluno.id}" />
+			</p:graphicImage>
+			</p:tooltip>
+		</p:column>
+
+		<p:column headerText="CPF" style="width:200px;">
+				<h:outputText value="#{aluno.cpf}" />
+			</p:column>
+			
+			<p:column headerText="E-mail" style="width:250px;">
+				<h:outputText value="#{aluno.email}" />
+			</p:column>
+			
+			<p:column headerText="Data Nascimento" style="width:85px;">
+				<h:outputText value="#{aluno.dataNascimento}" >
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Ativo" style="width:60px;">
+				<h:outputText value="#{aluno.ativo ? 'Sim' : 'Não'}" />
+			</p:column>
+			
+			<p:column style="width:60px; text-align:center;">
+				<p:commandButton icon="editar-icon" 
+				action="#{alunoBean.editar(aluno)}" update=":aluno_form"/>
+			</p:column>
+			
+		</p:dataTable>
+	</p:panel>
+
+</html>
