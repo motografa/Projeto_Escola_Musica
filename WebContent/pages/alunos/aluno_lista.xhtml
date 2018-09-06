@@ -13,11 +13,12 @@
 		<p:dataTable value="#{alunoBean.alunos}" var="aluno"
 			paginator="true" rows="15" rowsPerPageTemplate="5, 10, 15" style="width:1200px;">
 
-		<p:column headerText="Foto" style="width:70px;">
+		<p:column headerText="Foto" style="width:70px; text-align:center">
 			<p:graphicImage value="#{alunoBean.imagemAluno}" 
 			width="60" height="60" cache="false">
 				<f:param name="id_aluno" value="#{aluno.id}" />
 			</p:graphicImage>
+			<p:outputLabel rendered="#{aluno.foto == null}" value="Sem foto" />
 		</p:column>
 
 		<p:column headerText="Nome" style="width:300px;">
