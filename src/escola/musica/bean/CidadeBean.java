@@ -19,7 +19,7 @@ public class CidadeBean implements Serializable{
 
 	private static final long serialVersionUID = -8077768006424832717L;
 
-	private Cidade cidade;
+	private Cidade cidade = new Cidade();
 	private List<Cidade> cidades;
 	
 
@@ -36,7 +36,7 @@ public class CidadeBean implements Serializable{
 		consultar();
 	}
 	
-	public void novaCiadade() {
+	public void cancelar() {
 		cidade = new Cidade();
 	}
 	

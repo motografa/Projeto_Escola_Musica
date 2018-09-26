@@ -10,19 +10,60 @@ template="/pages/layout/template.xhtml"
 
 	<ui:define name="titulo">Cidades</ui:define>
 	<ui:define name="principal">
-	
+
 		<p:panel header="Cadastro de cidades">
-			<p:dataTable value="#{cidadeBean.cidades}" var="cidade">
-				<p:column headerText="Nome">
-					<h:outputText value="#{cidade.nome}" />
-				</p:column>
-				
-				<p:column headerText="Estado">
-					<h:outputText value="#{cidade.estado.label}" />
-				</p:column>
+			<h:form id="form-cidade">
 			
-			</p:dataTable>
+				<p:toolbar>
+					<f:facet name="left">
+						<p:commandButton value="Nova" icon="ui-icon-document"
+							process="@this" oncomplete="PF('cadastroCidadeDialog').show()" />
+
+						<span class="ui-separator"> <span
+							class="ui-icon ui-icon-grip-dotted-vertical" />
+						</span>
+
+						<p:commandButton title="Editar" icon="ui-icon-pencil" />
+						<p:commandButton title="Excluir" icon="ui-icon-trash" />
+					</f:facet>
+				</p:toolbar><br />
+
+				<p:dataTable value="#{cidadeBean.cidades}" id="tabela-cidades" var="cidade"
+					style="width:50%;" paginator="true" rows="20"
+					rowsPerPageTemplate="10, 20, 50, 100">
+					<p:column headerText="Nome" filterBy="#{cidade.nome}" 
+						filterMatchMode="contains" sortBy="#{cidade.nome}">
+						<h:outputText value="#{cidade.nome}" />
+					</p:column>
+
+					<p:column headerText="Estado" style="width:35%;">
+						<h:outputText value="#{cidade.estado.label}" />
+					</p:column>
+
+				</p:dataTable>
+				
+				<p:dialog header="Nova Cidade" id="cidade-dialog" widgetVar="cadastroCidadeDialog" 
+					modal="true" resizable="false" draggable="false" closeOnEscape="true"
+					width="350" >
+					<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel value="Nome:" />
+						<p:inputText value="#{cidadeBean.cidade.nome}"/>
+						
+						<h:outputLabel value="Estado: " />
+						<p:selectOneMenu value="#{cidadeBean.cidade.estado}">
+							<f:selectItem itemLabel="Selecione" value="#{null}"/>
+							<f:selectItems value="#{cidadeBean.estados}" var="estado"  itemLabel="#{estado.label}" itemValue="#{estado}"/>
+						</p:selectOneMenu>
+					</h:panelGrid>
+					
+					<p:commandButton value="Salvar" icon="salvar-icon" 
+						action="#{cidadeBean.salvar}" oncomplete="PF('cadastroCidadeDialog').hide()" update="tabela-cidades"/>
+					<p:commandButton value="Cancelar" icon="voltar-icon" style="margin-left:8px" 
+						oncomplete="PF('cadastroCidadeDialog').hide()" action="#{cidadeBean.cancelar}" immediate="true" />
+					
+				</p:dialog>
+			</h:form>
 		</p:panel>
-		
+
 	</ui:define>
 </ui:composition>
