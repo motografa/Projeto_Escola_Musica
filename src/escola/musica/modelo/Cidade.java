@@ -21,11 +21,11 @@ public class Cidade implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@NotEmpty(message = "Cidade é obrigatória")
+	@NotEmpty(message = "Preencha o nome da cidade")
 	private String nome;
 	
 	@Enumerated(EnumType.STRING)
-	@NotNull(message = "Selecione um estado")
+	@NotNull(message = "Preencha o nome do estado")
 	private Estado estado;
 	
 	public Cidade() {

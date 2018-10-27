@@ -9,6 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
+
 import escola.musica.dao.GenericDAO;
 import escola.musica.modelo.Cidade;
 import escola.musica.modelo.Estado;
@@ -22,18 +24,16 @@ public class CidadeBean implements Serializable{
 	private Cidade cidade = new Cidade();
 	private List<Cidade> cidades;
 	
-
-	
 	public void iniciarBean() {
 		consultar();
 	}
 	
 	public void salvar() {
 		new GenericDAO<Cidade>(Cidade.class).salvar(cidade);
-		FacesContext.getCurrentInstance()
-			.addMessage(null, new FacesMessage("Cidade cadastrada com sucesso!"));
-		cidade = null;
-		consultar();
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cidade cadastrada com sucesso!"));
+		cidade = new Cidade();
+		consultar(); // para atualizar a tabela
+		RequestContext.getCurrentInstance().execute("PF('cadastroCidadeDialog').hide()");
 	}
 	
 	public void cancelar() {
