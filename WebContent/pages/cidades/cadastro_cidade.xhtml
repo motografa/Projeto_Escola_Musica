@@ -13,8 +13,8 @@ template="/pages/layout/template.xhtml"
 
 		<p:panel header="Cadastro de cidades">
 			<h:form id="form-cidade">
-				<p:growl id="msgs" />
-				<p:toolbar>
+				<p:growl id="msgs" autoUpdate="true"/>
+				<p:toolbar id="toolbar">
 					<f:facet name="left">
 						<p:commandButton value="Nova" icon="ui-icon-document"
 							oncomplete="PF('cadastroCidadeDialog').show()" 
@@ -26,14 +26,25 @@ template="/pages/layout/template.xhtml"
 						<span class="ui-icon ui-icon-grip-dotted-vertical" />
 						</span>
 
-						<p:commandButton title="Editar" icon="ui-icon-pencil" />
-						<p:commandButton title="Excluir" icon="ui-icon-trash" />
+						<p:commandButton title="Editar" icon="ui-icon-pencil" disabled="#{cidadeBean.cidadeSelecionada == null}" 
+							oncomplete="PF('cadastroCidadeDialog').show()" process="@this" update="cidade-dialog">
+							<f:setPropertyActionListener target="#{cidadeBean.cidade}" value="#{cidadeBean.cidadeSelecionada}" />
+						</p:commandButton>
+						
+						<p:commandButton title="Excluir" icon="ui-icon-trash" disabled="#{cidadeBean.cidadeSelecionada == null}" />
 					</f:facet>
-				</p:toolbar><br />
+				</p:toolbar>
+				<br />
 
 				<p:dataTable value="#{cidadeBean.cidades}" id="tabela-cidades" var="cidade"
 					style="width:50%;" paginator="true" rows="20"
-					rowsPerPageTemplate="10, 20, 50, 100">
+					rowsPerPageTemplate="10, 20, 50, 100"
+					selection="#{cidadeBean.cidadeSelecionada}" selectionMode="single"
+					rowKey="#{cidade.id}"  >
+					
+					<p:ajax event="rowSelect" update=":form-cidade:toolbar"/>
+					<p:ajax event="rowUnselect" update=":form-cidade:toolbar"/>
+					
 					<p:column headerText="Nome" filterBy="#{cidade.nome}" 
 						filterMatchMode="contains" sortBy="#{cidade.nome}">
 						<h:outputText value="#{cidade.nome}" />
@@ -51,7 +62,7 @@ template="/pages/layout/template.xhtml"
 					<h:panelGrid columns="2" cellpadding="5" id="cidade-grid">
 					
 						<h:outputLabel value="Nome:" />
-							<p:inputText value="#{cidadeBean.cidade.nome}" required="true"/>
+							<p:inputText value="#{cidadeBean.cidade.nome}" required="true" style="width:200px;"/>
 						
 						<h:outputLabel value="Estado: " rendered="true"/>
 							<p:selectOneMenu value="#{cidadeBean.cidade.estado}">
@@ -64,10 +75,11 @@ template="/pages/layout/template.xhtml"
 					<p:commandButton value="Salvar" icon="ui-icon-disk" 
 						action="#{cidadeBean.salvar}" 
 						oncomplete="if(!args.validationFailed) PF('cadastroCidadeDialog').hide()" 
-						update="tabela-cidades cidade-grid" />
+						update="tabela-cidades cidade-grid toolbar" />
 						
 					<p:commandButton value="Cancelar" icon="ui-icon-close" style="margin-left:8px" 
-						 oncomplete="PF('cadastroCidadeDialog').hide()" immediate="true" action="#{cidadeBean.cancelar}" />
+						 oncomplete="PF('cadastroCidadeDialog').hide()" process="@this" action="#{cidadeBean.cancelar}"
+						 update="tabela-cidades toolbar" />
 					
 				</p:dialog>
 			</h:form>
