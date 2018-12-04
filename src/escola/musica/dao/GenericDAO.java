@@ -29,6 +29,7 @@ public class GenericDAO<T> {
 
 		entityManager.getTransaction().begin();
 
+		t = entityManager.merge(t);
 		entityManager.remove(t); // Se existir ele atualiza, senão ele cria.
 
 		entityManager.getTransaction().commit();

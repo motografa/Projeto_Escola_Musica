@@ -9,6 +9,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.event.RowEditEvent;
+
+import escola.musica.dao.CidadeDAO;
 import escola.musica.dao.GenericDAO;
 import escola.musica.modelo.Cidade;
 import escola.musica.modelo.Estado;
@@ -39,6 +42,17 @@ public class CidadeBean implements Serializable{
 	public void cancelar() {
 		cidade = new Cidade();
 		cidadeSelecionada = null;
+	}
+	
+	public void excluir() {
+		new GenericDAO<Cidade>(Cidade.class).excluir(cidadeSelecionada);
+		cidadeSelecionada = null;
+		consultar();
+	}
+	
+	public void onRowEdit(RowEditEvent event) {
+		cidade = (Cidade) event.getObject();
+		salvar();//pega a mensagem atual e mandar salvar
 	}
 	
 	public void consultar() {
