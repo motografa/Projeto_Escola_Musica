@@ -43,45 +43,18 @@ template="/pages/layout/template.xhtml"
 					style="width:50%;" paginator="true" rows="20"
 					rowsPerPageTemplate="10, 20, 50, 100"
 					selection="#{cidadeBean.cidadeSelecionada}" selectionMode="single"
-					rowKey="#{cidade.id}" editable="true" >
+					rowKey="#{cidade.id}" >
 					
 					<p:ajax event="rowSelect" update=":form-cidade:toolbar"/>
 					<p:ajax event="rowUnselect" update=":form-cidade:toolbar"/>
-					<p:ajax event="rowEdit" listener="#{cidadeBean.onRowEdit}" 
-						update="tabela-cidades :msgs"/>
 					
 					<p:column headerText="Nome" filterBy="#{cidade.nome}" 
 						filterMatchMode="contains" sortBy="#{cidade.nome}">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{cidade.nome}" />
-							</f:facet>
-							<f:facet name="input">
-								<h:inputText value="#{cidade.nome}" style="width:94%; margin-left:1%" />
-							</f:facet>
-						</p:cellEditor>
+						<h:outputText value="#{cidade.nome}" />
 					</p:column>
 
 					<p:column headerText="Estado" style="width:35%;">
-						<p:cellEditor>
-							<f:facet name="output">
-								<h:outputText value="#{cidade.estado.label}" />
-							</f:facet>
-							<f:facet name="input">
-								<p:selectOneMenu value="#{cidade.estado}" filter="true" filterMatchMode="contains"
-									 style="width:94%; margin-left:1%">
-									<f:selectItem itemLabel="Selecione" itemValue="#{null}"/>
-									<f:selectItems value="#{cidadeBean.estados}" var="estado"  
-										itemLabel="#{estado.label}" itemValue="#{estado}"/>
-								</p:selectOneMenu>
-							</f:facet>
-						</p:cellEditor>
-					
-						
-					</p:column>
-					
-					<p:column style="width:50px; text-align:center">
-						<p:rowEditor />
+						<h:outputText value="#{cidade.estado.label}" />
 					</p:column>
 
 				</p:dataTable>

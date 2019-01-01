@@ -8,23 +8,25 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
-import escola.musica.dao.CidadeDAO;
 import escola.musica.dao.GenericDAO;
 import escola.musica.modelo.Aluno;
 import escola.musica.modelo.Cidade;
 import escola.musica.modelo.Estado;
+import escola.musica.servico.AlunoServico;
+import escola.musica.servico.CidadeServico;
 
-@ManagedBean
-@SessionScoped
+@Controller("alunoBean")
+@Scope("session")
 public class AlunoBean implements Serializable {
 
 	private static final long serialVersionUID = -1919440022785814835L;
@@ -34,6 +36,9 @@ public class AlunoBean implements Serializable {
 	private List<Estado> estados;
 //	private Integer idCidade;
 //	private UploadedFile file;
+	@Autowired private AlunoServico alunoServico;
+	
+	@Autowired private CidadeServico cidadeServico;
 	
 	public String getDataAtual() {
 		Calendar calendar = Calendar.getInstance();
@@ -42,11 +47,12 @@ public class AlunoBean implements Serializable {
 	}
 	
 	public List<Cidade> getCidadesDoEstado(){
-		return CidadeDAO.obterCidadesDoEstado(aluno.getEndereco().getCidade().getEstado());
+		return cidadeServico.obterCidadesDoEstado(aluno.getEndereco().getCidade().getEstado());
+//		return CidadeDAO.obterCidadesDoEstado(aluno.getEndereco().getCidade().getEstado());
 	}
 	
 	public void iniciarBean() {
-		alunos = new GenericDAO<Aluno>(Aluno.class).listarTodos();
+		alunos = alunoServico.listarTodos();
 		setEstados(Arrays.asList(Estado.values()));
 	}
 
@@ -60,11 +66,11 @@ public class AlunoBean implements Serializable {
 
 	public void salvar() {
 //		aluno.getEndereco().setCidade(new GenericDAO<Cidade>(Cidade.class).obterPorId(idCidade));
-		new GenericDAO<Aluno>(Aluno.class).salvar(aluno);
+		alunoServico.salvar(aluno);
 
 		FacesContext.getCurrentInstance().addMessage(null, //
 				new FacesMessage("Aluno cadastrado com sucesso!"));
-		alunos = new GenericDAO<Aluno>(Aluno.class).listarTodos();
+		alunos = alunoServico.listarTodos();
 		aluno = null;
 	}
 
