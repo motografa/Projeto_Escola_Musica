@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -16,6 +18,13 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name = "Matricula.ListarTodas", query = "select new escola.musica.modelo.MatriculaVO("
+			+ "id, numero, dataMatricula, aluno.nome, curso.nome) "
+			+ "from Matricula"),
+	@NamedQuery(name = "Matricula.ListarTodasAtivas", query = "select m from Matricula m where ativo = true")
+})
+
 public class Matricula implements Serializable {
 
 	private static final long serialVersionUID = 8083358052410703771L;
@@ -45,6 +54,23 @@ public class Matricula implements Serializable {
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataDesativacao;
+	
+	public Matricula() {}
+	
+	public Matricula(Integer id, Date dataMatricula, String numero, String nomeAluno, String nomeCurso) {
+		this.id = id;
+		this.dataMatricula = dataMatricula;
+
+		Aluno aluno = new Aluno();
+		aluno.setNome(nomeAluno);
+		this.aluno = aluno;
+		
+		Curso curso = new Curso();
+		curso.setNome(nomeCurso);
+		this.curso = curso;
+	}
+	
+	
 
 	public Integer getId() {
 		return id;

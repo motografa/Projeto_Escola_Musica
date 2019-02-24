@@ -5,17 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
-import escola.musica.dao.GenericDAO;
 import escola.musica.modelo.Cidade;
 import escola.musica.modelo.Estado;
 import escola.musica.servico.CidadeServico;
+import escola.musica.util.Mensagem;
 
 @Controller("cidadeBean")
 @Scope("session")
@@ -37,7 +34,7 @@ public class CidadeBean implements Serializable{
 	public void salvar() {
 //		new GenericDAO<Cidade>(Cidade.class).salvar(cidade);
 		cidadeServico.salvar(cidade);
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cidade cadastrada com sucesso!"));
+		Mensagem.mensagemInformacao("Cidade cadastrada com sucesso!");
 		cidade = new Cidade();
 		cidadeSelecionada = null;
 		consultar(); // para atualizar a tabela

@@ -22,6 +22,10 @@
 	background: url("icons/cursos.png") !important;
 }
 
+.cancelar-icon{
+	background: url("icons/cancelar.png") !important;
+}
+
 .ui-growl-item{
 	top: 10%;
 	left: 40%;

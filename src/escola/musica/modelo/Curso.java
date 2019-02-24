@@ -39,6 +39,8 @@ public class Curso implements Serializable {
 	private Date dataCriacao;
 
 
+	public Curso() {}
+	
 	public Date getDataCriacao() {
 		return dataCriacao;
 	}

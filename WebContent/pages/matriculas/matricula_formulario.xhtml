@@ -10,10 +10,10 @@
 	
 	<h:panelGrid columns="2">
 		<h:outputLabel value="Número: " />
-		<p:inputText value="#{matriculaBean.matricula.numero}" />
+		<p:inputText value="#{matriculaBean.matricula.numero}" size="10" />
 		
 		<h:outputLabel value="Data" />
-		<p:calendar value="#{matriculaBean.matricula.dataMatricula}" pattern="dd/MM/yyyy" mask="99/99/9999"/>
+		<p:calendar value="#{matriculaBean.matricula.dataMatricula}" pattern="dd/MM/yyyy" mask="99/99/9999" size="10" />
 		
 		<h:outputLabel value="Aluno: " />
 		<p:selectOneMenu value="#{matriculaBean.matricula.aluno}" converter="alunoConverter">
@@ -34,7 +34,7 @@
 	</h:panelGrid>
 	
 	<p:commandButton value="Salvar"  icon="salvar-icon" action="#{matriculaBean.salvar()}" update="matricula_form"/>
-	<p:commandButton value="Cancelar" action="#{matriculaBean.cancelar()}" immediate="true" update="matricula_form"/>
+	<p:commandButton value="Cancelar" action="#{matriculaBean.cancelar()}" immediate="true" update="matricula_form" icon="cancelar-icon"/>
 	
 	
 </p:panel>
